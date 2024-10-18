@@ -12,12 +12,13 @@ services:
       - nodejs-app
 
   nodejs-app:
-    image: node:14-alpine
+    build: 
+      context: ./nodejs-app
     container_name: nodejs-app
     working_dir: /app
     volumes:
       - ./nodejs-app:/app
-    command: sh -c "npm install && node index.js"
+    command: sh -c "wait-for mysql:3306 -- npm install && node index.js"
     depends_on:
       - mysql
 
